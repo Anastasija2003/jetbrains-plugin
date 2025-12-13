@@ -13,5 +13,5 @@ class MyProjectService(project: Project) {
         thisLogger().warn("Don't forget to remove all non-needed sample code files with their corresponding registration entries in `plugin.xml`.")
     }
 
-    fun getRandomNumber() = (1..104).random()
+    fun getRandomNumber() = (1..167).random()
 }
