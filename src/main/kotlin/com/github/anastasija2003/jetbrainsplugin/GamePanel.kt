@@ -1,6 +1,6 @@
 package com.github.anastasija2003.jetbrainsplugin // <-- Match your package
 
-import java.awt.Color
+import com.intellij.ui.JBColor
 import java.awt.Dimension
 import java.awt.Graphics
 import java.awt.event.ActionEvent
@@ -23,7 +23,7 @@ class GamePanel : JPanel(), ActionListener {
 
     init {
         preferredSize = Dimension(400, 400)
-        background = Color.DARK_GRAY
+        background = JBColor.DARK_GRAY
         isFocusable = true
         focusTraversalKeysEnabled = false
 
@@ -65,17 +65,17 @@ class GamePanel : JPanel(), ActionListener {
     override fun paintComponent(g: Graphics) {
         super.paintComponent(g)
 
-        g.color = Color.GREEN
+        g.color = JBColor.GREEN
         g.fillRect(playerX, playerY, 40, 40)
 
-        g.color = Color.RED
+        g.color = JBColor.RED
         g.fillRect(enemyX, enemyY, 40, 40)
 
-        g.color = Color.WHITE
+        g.color = JBColor.WHITE
         g.drawString("Score: $score", 10, 20)
 
         if (isGameOver) {
-            g.color = Color.YELLOW
+            g.color = JBColor.YELLOW
             g.drawString("GAME OVER! Press SPACE to restart.", 100, 200)
         }
     }
