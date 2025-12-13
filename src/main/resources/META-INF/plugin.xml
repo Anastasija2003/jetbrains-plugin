@@ -6,6 +6,8 @@
 
     <depends>com.intellij.modules.platform</depends>
 
+    <depends>com.intellij.modules.java</depends>
+
     <resource-bundle>messages.MyBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
@@ -20,6 +22,12 @@
                 description="Runs the example action">
 
             <!-- This puts the button in the 'Tools' menu -->
+            <add-to-group group-id="ToolsMenu" anchor="first"/>
+        </action>
+        <action id="com.github.anastasija2003.dailytools.BuildAndPlay"
+                class="com.github.anastasija2003.jetbrainsplugin.BuildAndPlayAction"
+                text="Build and Play"
+                description="Compiles the project and runs a game while waiting">
             <add-to-group group-id="ToolsMenu" anchor="first"/>
         </action>
     </actions>
