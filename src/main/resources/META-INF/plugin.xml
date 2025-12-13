@@ -12,4 +12,15 @@
         <toolWindow factoryClass="com.github.anastasija2003.jetbrainsplugin.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
         <postStartupActivity implementation="com.github.anastasija2003.jetbrainsplugin.startup.MyProjectActivity" />
     </extensions>
+    <actions>
+        <!-- IMPORTANT: Change 'class' to match the package at the top of your Kotlin file -->
+        <action id="com.github.anastasija2003.jetbrainsplugin.Example"
+                class="com.github.anastasija2003.jetbrainsplugin.Example"
+                text="Test Hackathon Plugin"
+                description="Runs the example action">
+
+            <!-- This puts the button in the 'Tools' menu -->
+            <add-to-group group-id="ToolsMenu" anchor="first"/>
+        </action>
+    </actions>
 </idea-plugin>
