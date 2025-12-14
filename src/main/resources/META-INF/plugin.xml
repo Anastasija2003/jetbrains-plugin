@@ -13,7 +13,14 @@
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow factoryClass="com.github.anastasija2003.jetbrainsplugin.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
         <postStartupActivity implementation="com.github.anastasija2003.jetbrainsplugin.startup.MyProjectActivity" />
+
+        <compiler.task execute="BEFORE" implementation="com.github.anastasija2003.jetbrainsplugin.GameStartTask"/>
+
     </extensions>
+    <projectListeners>
+        <listener class="com.github.anastasija2003.jetbrainsplugin.GameEndListener"
+                  topic="com.intellij.openapi.compiler.CompilationStatusListener"/>
+    </projectListeners>
     <actions>
         <!-- IMPORTANT: Change 'class' to match the package at the top of your Kotlin file -->
         <action id="com.github.anastasija2003.jetbrainsplugin.Example"
