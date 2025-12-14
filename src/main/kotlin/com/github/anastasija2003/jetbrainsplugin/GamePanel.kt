@@ -87,24 +87,19 @@ class GamePanel : JPanel(), ActionListener {
     override fun paintComponent(g: Graphics) {
         super.paintComponent(g)
 
-        // 1. Draw Game Background
         g.color = JBColor.DARK_GRAY
         g.fillRect(0, 0, width, gameHeight)
 
-        // 2. Draw Player
         drawDeveloper(g, playerX, playerY, 40)
 
-        // 3. Draw Enemies
         g.color = JBColor.RED
         for (enemy in enemies) {
             drawBug(g, enemy.x, enemy.y, enemy.size)
         }
 
-        // 4. Draw Score
         g.color = JBColor.WHITE
         g.drawString("Score: $score", 10, 20)
 
-        // 5. Draw Footer (The Message Area)
         g.color = JBColor.BLACK
         g.fillRect(0, gameHeight, width, footerHeight)
 
@@ -126,7 +121,6 @@ class GamePanel : JPanel(), ActionListener {
         }
         g.drawString(line, 10, y)
 
-        // 6. Draw Game Over Overlay (if dead)
         if (isGameOver) {
             g.color = JBColor(Color(0, 0, 0, 150), Color(0, 0, 0, 150))
             g.fillRect(0, 0, width, gameHeight) // Only cover game area
@@ -299,7 +293,6 @@ class GamePanel : JPanel(), ActionListener {
             (4 * scale).toInt()
         )
 
-        // SIMPLE EYES & MOUTH (optional)
         g2d.color = Color.BLACK
         val eyeY = y + (10 * scale).toInt()
         g2d.fillOval(x + (14 * scale).toInt(), eyeY, (3 * scale).toInt(), (3 * scale).toInt())

@@ -18,10 +18,8 @@ class RunGameOnExecutionListener : ExecutionListener {
     ) {
         val project: Project = env.project
 
-        // 1) Attach a listener to the run process so we know when it ends
         handler.addProcessListener(object : ProcessAdapter() {
             override fun processTerminated(event: ProcessEvent) {
-                // Close dialog on EDT when run finishes
                 SwingUtilities.invokeLater {
                     GameDialogHolder.dialog?.let { dlg ->
                         if (dlg.isVisible) {
@@ -33,15 +31,12 @@ class RunGameOnExecutionListener : ExecutionListener {
             }
         })
 
-        // 2) Open game dialog on EDT and start AI loop
         SwingUtilities.invokeLater {
-            // Reuse a single dialog instance per run
             if (GameDialogHolder.dialog == null || !GameDialogHolder.dialog!!.isVisible) {
                 val dialog = GameDialog(project)
                 GameDialogHolder.dialog = dialog
                 dialog.show()
 
-                // AI loop in background
                 thread(name = "MotivationLoop") {
                     val helper = BuildAndPlayAction()
                     while (dialog.isVisible) {
@@ -63,7 +58,6 @@ class RunGameOnExecutionListener : ExecutionListener {
     }
 }
 
-// Shared holder so processStarted/processTerminated talk about the same dialog
 object GameDialogHolder {
     var dialog: GameDialog? = null
 }
