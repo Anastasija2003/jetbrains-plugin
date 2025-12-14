@@ -30,13 +30,20 @@ class BuildAndPlayAction : AnAction() {
 
         // TASK 2: Start Build & Timer
         CompilerManager.getInstance(project).make { aborted, errors, warnings, context ->
+            thread {
+                try {
+                    // Let the user play for 10 seconds total
+                    Thread.sleep(10000)
+                } catch (e: InterruptedException) {
+                    e.printStackTrace()
+                }
 
                 SwingUtilities.invokeLater {
                     if (dialog.isVisible) {
                         dialog.close(DialogWrapper.OK_EXIT_CODE)
                     }
                 }
-
+            }
         }
     }
 
@@ -45,7 +52,6 @@ class BuildAndPlayAction : AnAction() {
             val url = URL("https://api.openai.com/v1/chat/completions")
             val connection = url.openConnection() as HttpURLConnection
             connection.requestMethod = "POST"
-            print(apiKey)
             connection.setRequestProperty("Authorization", "Bearer $apiKey")
             connection.setRequestProperty("Content-Type", "application/json")
             connection.doOutput = true
