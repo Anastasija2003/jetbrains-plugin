@@ -36,7 +36,6 @@ class GamePanel : JPanel(), ActionListener {
     private var motivationalMessage: String = "Asking AI for motivation..."
 
     init {
-        // Increased height to 480 to fit the text bar at bottom
         preferredSize = Dimension(400, gameHeight + footerHeight)
         background = JBColor.DARK_GRAY
         isFocusable = true
@@ -112,13 +111,11 @@ class GamePanel : JPanel(), ActionListener {
         g.color = JBColor.CYAN
         g.font = Font("Arial", Font.ITALIC, 14)
 
-        // Text Wrapping Logic for the footer
         val words = motivationalMessage.split(" ")
         var line = ""
-        var y = gameHeight + 25 // Start drawing inside the footer
+        var y = gameHeight + 25
 
         for (word in words) {
-            // Check if adding the word exceeds width
             if (g.fontMetrics.stringWidth(line + word) < width - 20) {
                 line += "$word "
             } else {
@@ -155,7 +152,6 @@ class GamePanel : JPanel(), ActionListener {
                 timer.stop()
             }
 
-            // Reset enemy if it passes the game height
             if (enemy.y > gameHeight) {
                 enemy.y = 0
                 enemy.x = (0..350).random()
@@ -316,6 +312,4 @@ class GamePanel : JPanel(), ActionListener {
             y + (17 * scale).toInt()
         )
     }
-
-
 }

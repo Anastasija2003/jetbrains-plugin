@@ -9,6 +9,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 import javax.swing.SwingUtilities
 import kotlin.concurrent.thread
+
 class BuildAndPlayAction : AnAction() {
     val apiKey = System.getenv("API_KEY")
     override fun actionPerformed(e: AnActionEvent) {
@@ -20,7 +21,6 @@ class BuildAndPlayAction : AnAction() {
         // TASK 1: Fetch Motivation Immediately in Background
         thread {
             val message = getMotivationalQuote()
-            // Update UI when message arrives
             SwingUtilities.invokeLater {
                 if (dialog.isVisible) {
                     dialog.gamePanel.updateFooterText(message)
@@ -32,7 +32,6 @@ class BuildAndPlayAction : AnAction() {
         CompilerManager.getInstance(project).make { aborted, errors, warnings, context ->
             thread {
                 try {
-                    // Let the user play for 10 seconds total
                     Thread.sleep(10000)
                 } catch (e: InterruptedException) {
                     e.printStackTrace()
@@ -56,7 +55,6 @@ class BuildAndPlayAction : AnAction() {
             connection.setRequestProperty("Content-Type", "application/json")
             connection.doOutput = true
 
-            // Prompt asking for a short quote suitable for the footer
             val jsonBody = """
                 {
                     "model": "gpt-3.5-turbo",
@@ -76,7 +74,6 @@ class BuildAndPlayAction : AnAction() {
 
             val response = connection.inputStream.bufferedReader().use { it.readText() }
 
-            // Manual Parser
             val searchKey = "\"content\": \""
             val startIndex = response.indexOf(searchKey)
 
@@ -89,7 +86,7 @@ class BuildAndPlayAction : AnAction() {
             while (i < response.length) {
                 val c = response[i]
                 if (isEscaped) {
-                    if (c == 'n') sb.append(' ') // Replace newline with space for footer
+                    if (c == 'n') sb.append(' ')
                     else sb.append(c)
                     isEscaped = false
                 } else {

@@ -7,7 +7,6 @@ import javax.swing.JComponent
 class GameDialog(project: Project?) : DialogWrapper(project) {
 
     // 1. WE MOVE IT HERE (Class Level)
-    // Now it lives as long as the window lives, and other files can see it.
     val gamePanel = GamePanel()
 
     init {
