@@ -1,24 +1,30 @@
-package com.github.anastasija2003.jetbrainsplugin.startup
+package com.github.anastasija2003.jetbrainsplugin
 
-import com.github.anastasija2003.jetbrainsplugin.BuildAndPlayAction
-import com.github.anastasija2003.jetbrainsplugin.GameDialog
-import com.intellij.openapi.application.ApplicationManager
+import com.intellij.execution.RunManagerListener
+import com.intellij.execution.RunnerAndConfigurationSettings
 import com.intellij.openapi.compiler.CompilerManager
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.startup.ProjectActivity
 import javax.swing.SwingUtilities
 import kotlin.concurrent.thread
 
-class MyProjectActivity : ProjectActivity {
+class RunGameOnRunListener : RunManagerListener {
 
-    override suspend fun execute(project: Project) {
-        // Create & show dialog on EDT
+    override fun runConfigurationSelected(settings: RunnerAndConfigurationSettings?) {
+        // Called when you press Run or change config; we only care when a config is actually selected to run.
+        // You may want a stricter hook (e.g. beforeRunTasks), but this is simple and works for hackathon.
+
+        val project: Project = settings?.configuration?.project ?: return
+
+        // Open dialog on EDT
         SwingUtilities.invokeLater {
             val dialog = GameDialog(project)
             dialog.show()
 
-            // Start AI quotes in background
-            thread(name = "MotivationLoop") {
+            // Start build in background (optional)
+            CompilerManager.getInstance(project).make(null)
+
+            // Start AI quotes loop
+            thread {
                 val helper = BuildAndPlayAction()
                 while (dialog.isVisible) {
                     val msg = helper.getMotivationalQuote()
@@ -34,11 +40,6 @@ class MyProjectActivity : ProjectActivity {
                     }
                 }
             }
-        }
-
-        // Start the build from a write-safe context (not inside invokeLater)
-        ApplicationManager.getApplication().invokeLater {
-            CompilerManager.getInstance(project).make(null)
         }
     }
 }

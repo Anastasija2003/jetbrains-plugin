@@ -1,30 +1,34 @@
-<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <id>com.github.anastasija2003.jetbrainsplugin</id>
     <name>hackaton-project</name>
     <vendor>anastasija2003</vendor>
 
     <depends>com.intellij.modules.platform</depends>
-
     <depends>com.intellij.modules.java</depends>
 
     <resource-bundle>messages.MyBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.anastasija2003.jetbrainsplugin.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
-        <postStartupActivity implementation="com.github.anastasija2003.jetbrainsplugin.startup.MyProjectActivity" />
-
+        <toolWindow
+                factoryClass="com.github.anastasija2003.jetbrainsplugin.toolWindow.MyToolWindowFactory"
+                id="MyToolWindow"/>
     </extensions>
+
+    <!-- Listen to Run/Debug executions -->
+    <projectListeners>
+        <listener
+                topic="com.intellij.execution.ExecutionListener"
+                class="com.github.anastasija2003.jetbrainsplugin.RunGameOnExecutionListener"/>
+    </projectListeners>
+
     <actions>
-        <!-- IMPORTANT: Change 'class' to match the package at the top of your Kotlin file -->
         <action id="com.github.anastasija2003.jetbrainsplugin.Example"
                 class="com.github.anastasija2003.jetbrainsplugin.Example"
                 text="Test Hackathon Plugin"
                 description="Runs the example action">
-
-            <!-- This puts the button in the 'Tools' menu -->
             <add-to-group group-id="ToolsMenu" anchor="first"/>
         </action>
+
         <action id="com.github.anastasija2003.dailytools.BuildAndPlay"
                 class="com.github.anastasija2003.jetbrainsplugin.BuildAndPlayAction"
                 text="Build and Play"

@@ -12,23 +12,33 @@ import kotlin.concurrent.thread
 
 class BuildAndPlayAction : AnAction() {
     val apiKey = System.getenv("API_KEY")
+
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.project ?: return
 
         val dialog = GameDialog(project)
         dialog.show()
 
-        // TASK 1: Fetch Motivation Immediately in Background
+        // TASK 1: Fetch motivation repeatedly in background
         thread {
-            val message = getMotivationalQuote()
-            SwingUtilities.invokeLater {
-                if (dialog.isVisible) {
-                    dialog.gamePanel.updateFooterText(message)
+            while (dialog.isVisible) {
+                val message = getMotivationalQuote()
+
+                SwingUtilities.invokeLater {
+                    if (dialog.isVisible) {
+                        dialog.gamePanel.updateFooterText(message)
+                    }
+                }
+
+                try {
+                    Thread.sleep(5000) // 5 seconds between quotes
+                } catch (_: InterruptedException) {
+                    break
                 }
             }
         }
 
-        // TASK 2: Start Build & Timer
+        // TASK 2: Start Build & Timer (unchanged, or remove if not needed)
         CompilerManager.getInstance(project).make { aborted, errors, warnings, context ->
             thread {
                 try {
@@ -46,7 +56,10 @@ class BuildAndPlayAction : AnAction() {
         }
     }
 
-    private fun getMotivationalQuote(): String {
+    // getMotivationalQuote() stays the same
+
+
+    fun getMotivationalQuote(): String {
         try {
             val url = URL("https://api.openai.com/v1/chat/completions")
             val connection = url.openConnection() as HttpURLConnection
