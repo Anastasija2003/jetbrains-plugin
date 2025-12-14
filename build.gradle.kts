@@ -3,6 +3,7 @@ import org.jetbrains.changelog.markdownToHTML
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 import org.jetbrains.intellij.platform.gradle.tasks.RunIdeTask
 
+
 plugins {
     id("java") // Java support
     alias(libs.plugins.kotlin) // Kotlin support
@@ -156,6 +157,15 @@ intellijPlatformTesting {
             plugins {
                 robotServerPlugin()
             }
+        }
+    }
+}
+tasks.withType<RunIdeTask>().configureEach {
+    val envFile = file(".env")
+    if (envFile.exists()) {
+        envFile.forEachLine {
+            val (k, v) = it.split("=", limit = 2)
+            environment(k, v)
         }
     }
 }
